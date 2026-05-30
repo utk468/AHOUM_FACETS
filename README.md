@@ -1,12 +1,12 @@
-# AETHER: Scalable Facets Evaluation System
+# AHOUM: Scalable Facets Evaluation System
 
-AETHER is a high-performance, modular evaluation engine designed to assess conversation turns across **300+ dimensions (scalable to 5,000+ facets)** in microseconds. Built with **FastAPI, MongoDB, HTML/CSS/JS, and Sentence Embeddings**, it circumvents the slow and expensive rate limits of one-shot LLM prompting by utilizing an intelligent **Feature Extraction + Matrix Scoring** architecture.
+AHOUM is a high-performance, modular evaluation engine designed to assess conversation turns across **300+ dimensions (scalable to 5,000+ facets)** in microseconds. Built with **FastAPI, MongoDB, HTML/CSS/JS, and Sentence Embeddings**, it circumvents the slow and expensive rate limits of one-shot LLM prompting by utilizing an intelligent **Feature Extraction + Matrix Scoring** architecture.
 
 ---
 
 ## 🚀 Architectural Blueprint
 
-AETHER avoids the architectural bottleneck of executing separate LLM queries per evaluation facet (which breaks when scaling to 5,000+ facets) by decoupling text understanding from facet mapping:
+AHOUM avoids the architectural bottleneck of executing separate LLM queries per evaluation facet (which breaks when scaling to 5,000+ facets) by decoupling text understanding from facet mapping:
 
 1. **Local Text Embedding (`all-MiniLM-L6-v2`)**: Generates a fast 384-dimensional semantic representation of the conversation turn.
 2. **LLM Feature Extraction (Llama-3-8B via Groq)**: A single parallelized LLM call extracts a dense vector of **30 core attributes** (covering linguistic quality, safety, and emotional indicators) and conversation turn metadata (sentiment, toxicity, readability, topic, intent).
