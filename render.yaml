@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: AETHER Evaluator
+    plan: free
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --log-level debug backend.app.main:app
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.9

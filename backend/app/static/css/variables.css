@@ -1,0 +1,27 @@
+/* ==========================================================================
+   AETHER DESIGN SYSTEM — PREMIUM STYLESHEET
+   ========================================================================== */
+
+:root {
+    --bg-dark: hsl(24, 10%, 4%);
+    --panel-dark: hsla(24, 10%, 8%, 0.65);
+    --panel-border: hsla(0, 0%, 100%, 0.06);
+    --panel-border-focus: hsla(24, 100%, 55%, 0.35);
+    
+    --text-primary: hsl(24, 20%, 94%);
+    --text-secondary: hsl(24, 10%, 70%);
+    --text-muted: hsl(24, 10%, 50%);
+    
+    --accent-blue: hsl(24, 100%, 55%); /* Actually orange now */
+    --accent-purple: hsl(12, 90%, 55%); /* Actually red-orange now */
+    --accent-glow: hsla(24, 100%, 55%, 0.15);
+    
+    --success: hsl(145, 80%, 45%);
+    --warning: hsl(40, 95%, 55%);
+    --danger: hsl(355, 85%, 55%);
+    --neutral: hsl(210, 15%, 55%);
+    
+    --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --sidebar-width: 280px;
+}
+

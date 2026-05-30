@@ -1,0 +1,85 @@
+/* Base Styles & Scrollbars */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body.dark-mode {
+    background-color: #05080e;
+}
+
+/* Premium Animated Glowing Background Orbs */
+.glass-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -3;
+    background: radial-gradient(circle at 50% 50%, #0d1527 0%, #05080e 100%);
+}
+
+.glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(140px);
+    z-index: -2;
+    opacity: 0.25;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+#orb-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent-blue);
+    top: -150px;
+    right: -100px;
+    animation: floatingOrb 25s infinite alternate;
+}
+
+#orb-2 {
+    width: 600px;
+    height: 600px;
+    background: var(--accent-purple);
+    bottom: -200px;
+    left: -150px;
+    animation: floatingOrb 35s infinite alternate-reverse;
+}
+
+@keyframes floatingOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, -40px) scale(1.1); }
+    100% { transform: translate(-30px, 80px) scale(0.9); }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsla(210, 100%, 60%, 0.1);
+    border-radius: 20px;
+    border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsla(210, 100%, 60%, 0.25);
+}
+
