@@ -66,7 +66,7 @@ Open your browser and navigate to: **[http://localhost:8000](http://localhost:80
 
 ---
 
-## 🐳 Dockerized Baseline (Brownie Point 2)
+## 🐳 Dockerized Baseline 
 
 AETHER is fully dockerized for instant single-command deployment.
 
