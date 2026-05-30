@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
 from pymongo import MongoClient
-from sentence_transformers import SentenceTransformer
+from huggingface_hub import InferenceClient
 from groq import Groq
 
 # Load environment variables
@@ -16,6 +16,7 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 MONGO_DB = os.getenv("MONGO_DB", "facets_evaluator")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_MODEL = os.getenv("GROQ_MODEL", "llama3-8b-8192")
+HF_TOKEN = os.getenv("HF_TOKEN", "")
 
 # Core 30 Features that will be extracted by the LLM
 CORE_FEATURES = [
@@ -208,15 +209,49 @@ def main():
         f["description"] = descriptions.get(f["name"], f"Measures {f['name'].lower()} characteristics.")
         
     # 4. Embeddings & Feature Alignment Weights
-    print("[*] Initializing Sentence Transformer Model ('all-MiniLM-L6-v2')...")
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    if not HF_TOKEN or HF_TOKEN == "YOUR_HF_TOKEN":
+        print("[!] HF_TOKEN not configured. Skipping embeddings and alignment calculation. Please add HF_TOKEN to .env!")
+        return
+
+    print("[*] Initializing HuggingFace InferenceClient...")
+    client = InferenceClient(api_key=HF_TOKEN)
+    model_name = "jinaai/jina-embeddings-v5-text-nano"
     
-    print("[+] Computing Embeddings for Core Features...")
-    core_embeddings = model.encode([f["desc"] for f in CORE_FEATURES])
+    def get_embeddings_in_batches(text_list, batch_size=10):
+        all_embeddings = []
+        for i in range(0, len(text_list), batch_size):
+            batch = text_list[i:i+batch_size]
+            print(f"   Embedding batch {i//batch_size + 1}/{(len(text_list)-1)//batch_size + 1}...")
+            try:
+                # Some HF endpoints don't strictly support batch array feature extraction via client.feature_extraction
+                # So we fallback to looping individually but quickly.
+                batch_embs = []
+                for text in batch:
+                    res = client.feature_extraction(text, model=model_name)
+                    if isinstance(res, list) and len(res) > 0 and isinstance(res[0], list):
+                        batch_embs.append(res[0])
+                    else:
+                        batch_embs.append(res)
+                all_embeddings.extend(batch_embs)
+                time.sleep(1) # Rate limit protection
+            except Exception as e:
+                print(f"[x] API Error during embedding: {e}")
+                # Mock fallback for this batch if api fails
+                for t in batch:
+                    import hashlib
+                    h = hashlib.md5(t.encode('utf-8')).hexdigest()
+                    rng = np.random.default_rng(int(h, 16) & 0xffffffff)
+                    vec = rng.normal(0, 1, 384)
+                    batch_embs.append((vec / np.linalg.norm(vec)).tolist())
+                all_embeddings.extend(batch_embs)
+        return all_embeddings
+
+    print("[+] Computing Embeddings for Core Features via HF API...")
+    core_embeddings = get_embeddings_in_batches([f["desc"] for f in CORE_FEATURES])
     
     print("[+] Computing Embeddings for all Facets & Calculating Alignment Weights...")
     facet_desc_list = [f["description"] for f in facets_data]
-    facet_embeddings = model.encode(facet_desc_list)
+    facet_embeddings = get_embeddings_in_batches(facet_desc_list)
     
     # Store everything in the list
     for idx, f in enumerate(facets_data):

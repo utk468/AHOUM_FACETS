@@ -1,39 +1,42 @@
 import numpy as np
 from typing import List
-
-try:
-    from sentence_transformers import SentenceTransformer
-    EMBEDDING_AVAILABLE = True
-except ImportError:
-    EMBEDDING_AVAILABLE = False
-    print("[!] sentence-transformers not installed. Embedding service will run in MOCK mode.")
+from huggingface_hub import InferenceClient
+from backend.app.config import settings
 
 class EmbeddingService:
-    _model = None
+    _client = None
 
     @classmethod
-    def get_model(cls):
-        if not EMBEDDING_AVAILABLE:
+    def get_client(cls):
+        if not settings.HF_TOKEN or settings.HF_TOKEN == "YOUR_HF_TOKEN":
             return None
-        if cls._model is None:
+            
+        if cls._client is None:
             try:
-                print("[*] Loading local sentence embedding model 'all-MiniLM-L6-v2'...")
-                cls._model = SentenceTransformer('all-MiniLM-L6-v2')
-                print("[+] Embedding model loaded successfully!")
+                print("[*] Initializing HuggingFace InferenceClient...")
+                cls._client = InferenceClient(api_key=settings.HF_TOKEN)
             except Exception as e:
-                print(f"[x] Failed to load embedding model: {e}")
-                cls._model = None
-        return cls._model
+                print(f"[x] Failed to initialize HF InferenceClient: {e}")
+                cls._client = None
+        return cls._client
 
     @classmethod
     def get_embedding(cls, text: str) -> List[float]:
-        model = cls.get_model()
-        if model is not None:
+        client = cls.get_client()
+        if client is not None:
             try:
-                embedding = model.encode(text)
-                return embedding.tolist()
+                # The model returns a list of floats (embedding) for a single input
+                embedding = client.feature_extraction(
+                    text,
+                    model="jinaai/jina-embeddings-v5-text-nano"
+                )
+                
+                # Check if it's nested (batch response format)
+                if isinstance(embedding, list) and len(embedding) > 0 and isinstance(embedding[0], list):
+                    return embedding[0]
+                return embedding
             except Exception as e:
-                print(f"[x] Error encoding text: {e}")
+                print(f"[x] Error encoding text via HF API: {e}")
         
         # MOCK Fallback: return a pseudo-random deterministic vector of size 384
         # based on character hash of text
