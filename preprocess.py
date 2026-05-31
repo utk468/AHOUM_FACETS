@@ -237,6 +237,7 @@ def main():
             except Exception as e:
                 print(f"[x] API Error during embedding: {e}")
                 # Mock fallback for this batch if api fails
+                batch_embs = []
                 for t in batch:
                     import hashlib
                     h = hashlib.md5(t.encode('utf-8')).hexdigest()
@@ -255,16 +256,16 @@ def main():
     
     # Store everything in the list
     for idx, f in enumerate(facets_data):
-        f["embedding"] = facet_embeddings[idx].tolist()
+        f_vec = np.array(facet_embeddings[idx])
+        f["embedding"] = f_vec.tolist()
         
         # Calculate alignment weights (cosine similarities between this facet and the 30 core features)
         # Cosine similarity = dot product of normalized vectors
-        f_vec = facet_embeddings[idx]
         f_norm = f_vec / np.linalg.norm(f_vec)
         
         similarities = []
         for c_idx, c in enumerate(CORE_FEATURES):
-            c_vec = core_embeddings[c_idx]
+            c_vec = np.array(core_embeddings[c_idx])
             c_norm = c_vec / np.linalg.norm(c_vec)
             
             sim = np.dot(f_norm, c_norm)
