@@ -4,6 +4,35 @@ AHOUM is a high-performance, modular evaluation engine designed to assess conver
 
 ---
 
+## 🖼️ Application Gallery
+
+<div align="center">
+  <table border="0" style="border-collapse: collapse; border: none;">
+    <tr style="border: none;">
+      <td width="50%" style="border: none; padding: 10px; text-align: center;">
+        <strong>1. Evaluation Workspace & Real-Time Input</strong><br/>
+        <img src="1.png" width="100%" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" alt="Evaluation Workspace"/>
+      </td>
+      <td width="50%" style="border: none; padding: 10px; text-align: center;">
+        <strong>2. Registered Facets Library & Metrics Library</strong><br/>
+        <img src="2.png" width="100%" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" alt="Registered Facets Library"/>
+      </td>
+    </tr>
+    <tr style="border: none;">
+      <td width="50%" style="border: none; padding: 10px; text-align: center;">
+        <strong>3. Dynamic Turn Analytics & Radar Charts</strong><br/>
+        <img src="3.png" width="100%" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" alt="Dynamic Analytics & Radar Charts"/>
+      </td>
+      <td width="50%" style="border: none; padding: 10px; text-align: center;">
+        <strong>4. Conversation History & Evaluation Logs</strong><br/>
+        <img src="4.png" width="100%" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" alt="Conversation History Logs"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
 ## 🚀 Architectural Blueprint
 
 AHOUM avoids the architectural bottleneck of executing separate LLM queries per evaluation facet (which breaks when scaling to 5,000+ facets) by decoupling text understanding from facet mapping:
@@ -64,30 +93,26 @@ python app.py
 ```
 Open your browser and navigate to: **[http://localhost:8000](http://localhost:8000)**
 
----
+## ☁️ Render Deployment
 
-## 🐳 Dockerized Baseline 
+AETHER is configured for instant, fully managed cloud deployment to **Render** using the provided `render.yaml` specification.
 
-AETHER is fully dockerized for instant single-command deployment.
+The production instance is live at:
+👉 **[https://aether-evaluator-0dw6.onrender.com](https://aether-evaluator-0dw6.onrender.com)**
 
-### 1. Build the evaluator
-```bash
-docker build -t evaluator .
-```
+### Deploying Your Own Instance on Render
 
-### 2. Run the evaluator
-Ensure a MongoDB instance is available, or use the Docker Compose orchestration below:
-```bash
-docker run -p 8000:8000 -e GROQ_API_KEY=your_key evaluator
-```
-
-### 3. Deploy with Docker Compose (Recommended)
-This spins up both the FastAPI application and a configured MongoDB instance in isolated containers:
-```bash
-# Provide key inline or ensure it is set in your host environment
-GROQ_API_KEY=your_key docker-compose up --build
-```
-Navigate to **[http://localhost:8000](http://localhost:8000)** to explore!
+1. **GitHub Integration**: Link your GitHub repository containing the AETHER codebase to your Render account.
+2. **Configuration (`render.yaml`)**:
+   Render automatically reads the native `render.yaml` configuration at your root directory to configure the environment:
+   * **Build Command**: `pip install -r requirements.txt`
+   * **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
+3. **Required Environment Variables**:
+   In your Render Dashboard, add the following Environment Variables to allow the system to operate:
+   * `GROQ_API_KEY`: Your Groq API key for LLM feature extraction.
+   * `MONGO_URI`: Your MongoDB connection string (e.g., MongoDB Atlas).
+   * `MONGO_DB`: The name of the MongoDB database (`facets_evaluator`).
+   * `HF_TOKEN`: Your Hugging Face Hub token for embedding generation.
 
 ---
 
