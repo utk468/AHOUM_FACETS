@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AETHER — Scalable Facets Evaluator</title>
+    <title>Scalable Facets Evaluator</title>
     <!-- Modern Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Premium Stylesheet -->
@@ -16,22 +19,23 @@
     <link rel="stylesheet" href="/static/css/layout.css">
     <link rel="stylesheet" href="/static/css/components.css">
 </head>
+
 <body class="dark-mode">
     <div class="glass-bg"></div>
     <div class="glow-orb" id="orb-1"></div>
     <div class="glow-orb" id="orb-2"></div>
-    
+
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="brand">
                 <i class="fa-solid fa-cube logo-icon"></i>
                 <div class="brand-text">
-                    <h1>AETHER</h1>
+                    <h1>AHOUM</h1>
                     <span>Facet scoring engine</span>
                 </div>
             </div>
-            
+
             <nav class="side-nav">
                 <button class="nav-item active" onclick="switchTab('evaluator')">
                     <i class="fa-solid fa-chart-line"></i> Turn Evaluator
@@ -43,7 +47,7 @@
                     <i class="fa-solid fa-history"></i> Evaluation History
                 </button>
             </nav>
-            
+
             <div class="system-status">
                 <h3>System Integrity</h3>
                 <div class="status-indicator" id="status-api">
@@ -85,18 +89,21 @@
                     <div class="glass-card input-card">
                         <div class="card-header">
                             <h3><i class="fa-solid fa-pen-fancy"></i> Conversation Turn</h3>
-                            <button class="btn btn-secondary btn-sm" onclick="loadSample()"><i class="fa-solid fa-magic"></i> Seed Sample</button>
+                            <button class="btn btn-secondary btn-sm" onclick="loadSample()"><i
+                                    class="fa-solid fa-magic"></i> Seed Sample</button>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="user-prompt">User Input Query</label>
-                                <textarea id="user-prompt" placeholder="Paste or type what the user asked (e.g., 'Write a Python program to sort a list of numbers')..."></textarea>
+                                <textarea id="user-prompt"
+                                    placeholder="Paste or type what the user asked (e.g., 'Write a Python program to sort a list of numbers')..."></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="assistant-response">Assistant Output Response</label>
-                                <textarea id="assistant-response" placeholder="Paste or type the AI model's response to evaluate..."></textarea>
+                                <textarea id="assistant-response"
+                                    placeholder="Paste or type the AI model's response to evaluate..."></textarea>
                             </div>
-                            
+
                             <div class="form-row">
                                 <div class="form-group half">
                                     <label for="convo-id">Conversation ID</label>
@@ -107,7 +114,7 @@
                                     <input type="number" id="turn-id" value="1" min="1">
                                 </div>
                             </div>
-                            
+
                             <button id="btn-evaluate" class="btn btn-primary btn-block" onclick="runEvaluation()">
                                 <i class="fa-solid fa-rocket"></i> Run High-Fidelity Evaluation
                             </button>
@@ -120,16 +127,18 @@
                         <div class="empty-state" id="results-empty-state">
                             <div class="empty-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                             <h3>Awaiting Evaluation Input</h3>
-                            <p>Submit a conversation turn on the left to see the instant vector scoring, linguistic indexes, safety, and emotion metrics.</p>
+                            <p>Submit a conversation turn on the left to see the instant vector scoring, linguistic
+                                indexes, safety, and emotion metrics.</p>
                         </div>
 
                         <!-- Results Content -->
                         <div class="results-content hidden" id="results-content-box">
                             <div class="results-header">
                                 <h3><i class="fa-solid fa-list-check"></i> Turn Characteristics</h3>
-                                <div class="badge glow-success"><i class="fa-solid fa-circle-check"></i> Evaluation Complete</div>
+                                <div class="badge glow-success"><i class="fa-solid fa-circle-check"></i> Evaluation
+                                    Complete</div>
                             </div>
-                            
+
                             <!-- Extra Columns Grid (Requirement 2) -->
                             <div class="metadata-grid">
                                 <div class="meta-item">
@@ -176,7 +185,8 @@
                                 <h3><i class="fa-solid fa-sliders"></i> Facet Scores Grid (300+ Dimensions)</h3>
                                 <div class="facets-search-bar">
                                     <i class="fa-solid fa-magnifying-glass search-inner-icon"></i>
-                                    <input type="text" id="facets-filter-input" placeholder="Search facet name..." oninput="filterEvaluationFacets()">
+                                    <input type="text" id="facets-filter-input" placeholder="Search facet name..."
+                                        oninput="filterEvaluationFacets()">
                                 </div>
                             </div>
 
@@ -210,7 +220,8 @@
                         <div class="header-right">
                             <div class="search-box">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" id="db-search-input" placeholder="Search facet definitions..." oninput="fetchAndRenderDBFacets()">
+                                <input type="text" id="db-search-input" placeholder="Search facet definitions..."
+                                    oninput="fetchAndRenderDBFacets()">
                             </div>
                             <div class="filter-dropdown">
                                 <select id="db-category-select" onchange="fetchAndRenderDBFacets()">
@@ -248,7 +259,8 @@
                 <div class="glass-card full-card">
                     <div class="card-header border-b">
                         <h3><i class="fa-solid fa-history"></i> Past Evaluated Conversation Turns</h3>
-                        <button class="btn btn-danger btn-sm" onclick="clearAllHistory()"><i class="fa-solid fa-trash"></i> Clear All History</button>
+                        <button class="btn btn-danger btn-sm" onclick="clearAllHistory()"><i
+                                class="fa-solid fa-trash"></i> Clear All History</button>
                     </div>
                     <div class="card-body scroll-body">
                         <div class="history-list" id="history-container">
@@ -268,4 +280,5 @@
 
     <script type="module" src="/static/js/app.js"></script>
 </body>
+
 </html>

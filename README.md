@@ -91,7 +91,7 @@ Navigate to **[http://localhost:8000](http://localhost:8000)** to explore!
 
 ---
 
-## 📡 API Documentation
+## 📡 APIs Documentation
 
 AETHER exposes clean, self-documenting JSON endpoints (accessible interactively at `/docs`):
 
