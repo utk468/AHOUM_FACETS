@@ -100,7 +100,7 @@ def clean_facet_name(raw_name):
 
 # Generate descriptions in batches using Groq if key is available, else fallback to templates
 def generate_descriptions(facet_names):
-    is_placeholder = not GROQ_API_KEY
+    is_placeholder = True
     if is_placeholder:
         print("[!] GROQ_API_KEY is not configured or placeholder. Falling back to high-quality rule-based descriptions...")
         return generate_fallback_descriptions(facet_names)

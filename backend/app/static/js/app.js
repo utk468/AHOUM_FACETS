@@ -110,14 +110,14 @@ function reloadEvaluationFromHistory(item) {
     renderResultsMetadata(item.metadata);
     renderFacetScores(item.facet_scores);
     
-    showToast(\`Loaded evaluation logs for convo thread '\${item.conversation_id}'!\`);
+    showToast(`Loaded evaluation logs for convo thread '${item.conversation_id}'!`);
 }
 
 function loadSample() {
     const samples = [
         {
             user: "Write a short Python script that takes a list of integers and returns only the prime numbers.",
-            assistant: "Here is a Python function to filter prime numbers:\\n\\n\`\`\`python\\ndef get_primes(numbers):\\n    def is_prime(n):\\n        if n < 2: return False\\n        for i in range(2, int(n**0.5) + 1):\\n            if n % i == 0: return False\\n        return True\\n    return [num for num in numbers if is_prime(num)]\\n\`\`\`\\nThis function uses an optimized trial division check up to the square root of each number to filter the list in O(N*sqrt(M)) time complexity.",
+            assistant: "Here is a Python function to filter prime numbers:\n\n```python\ndef get_primes(numbers):\n    def is_prime(n):\n        if n < 2: return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0: return False\n        return True\n    return [num for num in numbers if is_prime(num)]\n```\nThis function uses an optimized trial division check up to the square root of each number to filter the list in O(N*sqrt(M)) time complexity.",
             convo_id: "coding_thread_abc",
             turn_id: 1
         },
