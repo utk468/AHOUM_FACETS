@@ -1,7 +1,7 @@
 import os
 import re
+import csv
 import numpy as np
-import pandas as pd
 from typing import Dict, Any, List
 from backend.app.database import get_db_client
 from backend.app.services.embedding import EmbeddingService
@@ -28,16 +28,22 @@ class FacetScorerService:
                 print(f"[x] Failed to load facets from DB: {e}. Falling back to CSV processing...")
                 
         # CSV direct loading fallback
-        csv_path = "c:\\Users\\ASUS\\Desktop\\AHOUM\\Facets Assignment.csv"
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        csv_path = os.path.join(base_dir, "Facets Assignment.csv")
+        
         if not os.path.exists(csv_path):
-            print("[x] Critical: CSV file not found. Returning empty list.")
+            print(f"[x] Critical: CSV file not found at {csv_path}. Returning empty list.")
             return []
             
         print(f"[*] Falling back to direct load from CSV: {csv_path}")
         try:
-            df = pd.read_csv(csv_path)
-            col_name = df.columns[0]
-            raw_names = df[col_name].dropna().astype(str).tolist()
+            raw_names = []
+            with open(csv_path, "r", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                header = next(reader, None)
+                for row in reader:
+                    if row and row[0]:
+                        raw_names.append(str(row[0]))
             
             # Clean and deduplicate
             seen = set()
